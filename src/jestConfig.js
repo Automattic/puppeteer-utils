@@ -7,5 +7,8 @@ export const jestConfig = {
         `${currentDir}/setup-env.js`,
         `${currentDir}/jest.test.failure.js`,
         'expect-puppeteer'
+    ],
+    transformIgnorePatterns: [
+        'node_modules/(?!(puppeteer-utils)/)'
     ]
 };
