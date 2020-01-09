@@ -9,8 +9,9 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel --no-babelrc src -d lib --presets=@babel/preset-env",
+    "build": "babel src -d lib",
     "lint": "eslint . --max-warnings=0",
+    "postinstall": "npm run build",
     "test": "./run.sh ${TESTARGS:-$npm_package_defaultTestArgs}"
   },
   "dependencies": {
