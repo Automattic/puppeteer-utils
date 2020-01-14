@@ -84,7 +84,7 @@ export async function waitAndType( page, selector, value, options = { visible: t
  * @return {boolean} true if visible, false if not
  */
 export async function isEventuallyVisible( page, selector, timeout = 5000 ) {
-    const isPresent = await isEventuallyPresent( this.page, selector, { visible: true, timeout } );
+    const isPresent = await isEventuallyPresent( page, selector, { visible: true, timeout } );
     if ( ! isPresent ) {
         console.log( `Element is not visible by locator: ${ selector }` );
     }
