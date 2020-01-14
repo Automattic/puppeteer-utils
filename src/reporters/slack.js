@@ -16,11 +16,18 @@ const {
 } = process.env;
 const token = E2E_SLACK_TOKEN || config.get( 'slackToken' );
 const conversationId = E2E_CHANNEL_NAME || config.get( 'slackChannel' );
+const ccUserList = config.get( 'ccUsers' );
+const slackBotUsername = config.get( 'slackBotUsername' );
+const slackBotEmoji = config.get( 'slackBotEmoji' );
 const webCli = new WebClient( token );
 
 const repoURL = `https://github.com/${ TRAVIS_REPO_SLUG }`;
 const branchName = TRAVIS_PULL_REQUEST_BRANCH !== '' ? TRAVIS_PULL_REQUEST_BRANCH : TRAVIS_BRANCH;
-const ccBrbrr = 'cc <@U6NSPV1LY>';
+let ccUsers;
+
+if ( ccUserList != '' ) {
+  ccUsers = 'cc ' + ccUserList;
+}
 
 async function sendRequestToSlack( fn ) {
     try {
@@ -68,7 +75,7 @@ const getMessage = ( { name, block, error } ) => {
 *Github branch:* ${ branchName }
 *Github PR URL:* ${ repoURL }/pull/${ TRAVIS_PULL_REQUEST }` )
     );
-    message.push( createSection( ccBrbrr ) );
+    message.push( createSection( ccUsers ) );
     return message;
 };
 
@@ -79,8 +86,8 @@ export async function sendFailedTestMessageToSlack( testResult ) {
 export async function sendMessageToSlack( message ) {
     const payload = {
         channel: conversationId,
-        username: 'Gutenpack testbot',
-        icon_emoji: ':gutenpack:',
+        username: slackBotUsername,
+        icon_emoji: slackBotEmoji,
     };
 
     if ( typeof message === 'string' ) {
@@ -96,8 +103,8 @@ export async function sendMessageToSlack( message ) {
 export async function sendSnippetToSlack( message ) {
     const payload = {
         channels: conversationId,
-        username: 'Gutenpack testbot',
-        icon_emoji: ':gutenpack:',
+        username: slackBotUsername,
+        icon_emoji: slackBotEmoji,
         content: message,
     };
 
