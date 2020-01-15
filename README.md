@@ -18,15 +18,24 @@ module.exports = jestConfig;
 
 
 #### Jest Puppeteer Config
-This config is set by using an environment variable pointing to the config file that is used by the Jest Puppeteer package.
+There are two options for the Jest Puppeteer config. 
+
+**Option 1:** Use the Jest Puppeteer config as is from this package. The `useJestPuppeteerConfig` method sets the `JEST_PUPPETEER_CONFIG` environment variable to point to the config file within the package. A good place to use this is in the `jest.config.js` file created above.
+```javascript
+const { useJestPuppeteerConfig } = require( 'puppeteer-utils' );
+
+useJestPuppeteerConfig();
+```
+
+**Option 2:** Create your own `jest-puppeteer.config.js` file and set the `JEST_PUPPETEER_CONFIG` to point to your file. You can use the config from this package as a base, or as it is.
 ```javascript
 const { jestPuppeteerConfig } = require( 'puppeteer-utils' );
 
-jestPuppeteerConfig.useJestPuppeteerConfig();
+module.exports = jestPuppeteerConfig;
 ```
 
 
-#### Overwriting or extending Jest Config
+#### Overwriting or extending Jest Config or Jest Puppeteer Config
 If you need to add config values, scripts or overwrite values, you can do so. Here is an example of adding a new setup script.
 ```javascript
 const { jestConfig } = require( 'puppeteer-utils' );

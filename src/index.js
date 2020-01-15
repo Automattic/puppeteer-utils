@@ -1,4 +1,6 @@
-import * as jestPuppeteerConfig from './jest-puppeteer-config';
+import { useJestPuppeteerConfig, jestPuppeteerConfig } from  "./jest-puppeteer";
+
+'./jest-puppeteer-config';
 import {
   clickAndWaitForNewPage,
   getAccountCredentials,
@@ -21,6 +23,7 @@ import { jestConfig } from './jestConfig';
 import Page from './page';
 
 export {
+  useJestPuppeteerConfig,
   jestPuppeteerConfig,
   clickAndWaitForNewPage,
   getAccountCredentials,
