@@ -1,8 +1,7 @@
 {
   "name": "puppeteer-utils",
-  "version": "0.0.5",
+  "version": "0.0.1",
   "description": "Puppeteer utils and config for WP",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/Automattic/puppeteer-utils.git"

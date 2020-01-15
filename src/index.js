@@ -1,23 +1,41 @@
 import * as jestPuppeteerConfig from './jest-puppeteer-config';
-import * as pageUtils from './page-utils';
-import * as setup from './setup';
+import {
+  clickAndWaitForNewPage,
+  getAccountCredentials,
+  isEventuallyPresent,
+  isEventuallyVisible,
+  logDebugLog,
+  logHTML,
+  waitAndClick,
+  waitAndType,
+  waitForSelector,
+  scrollIntoView
+} from './page-utils';
+import {
+  WP_ADMIN_USER,
+  WP_BASE_URL,
+  WP_PASSWORD,
+  WP_USERNAME
+} from './setup';
 import { jestConfig } from './jestConfig';
 import Page from './page';
 
-exports.jestPuppeteerConfig = jestPuppeteerConfig;
-exports.clickAndWaitForNewPage = pageUtils.clickAndWaitForNewPage;
-exports.getAccountCredentials = pageUtils.getAccountCredentials;
-exports.isEventuallyPresent = pageUtils.isEventuallyPresent;
-exports.isEventuallyVisible = pageUtils.isEventuallyVisible;
-exports.logDebugLog = pageUtils.logDebugLog;
-exports.logHTML = pageUtils.logHTML;
-exports.waitAndClick = pageUtils.waitAndClick;
-exports.waitAndType = pageUtils.waitAndType;
-exports.waitForSelector = pageUtils.waitForSelector;
-exports.scrollIntoView = pageUtils.scrollIntoView;
-exports.WP_ADMIN_USER = setup.WP_ADMIN_USER;
-exports.WP_BASE_URL = setup.WP_BASE_URL;
-exports.WP_PASSWORD = setup.WP_PASSWORD;
-exports.WP_USERNAME = setup.WP_USERNAME;
-exports.jestConfig = jestConfig;
-exports.Page = Page;
+export {
+  jestPuppeteerConfig,
+  clickAndWaitForNewPage,
+  getAccountCredentials,
+  isEventuallyPresent,
+  isEventuallyVisible,
+  logDebugLog,
+  logHTML,
+  waitAndClick,
+  waitAndType,
+  waitForSelector,
+  scrollIntoView,
+  WP_ADMIN_USER,
+  WP_BASE_URL,
+  WP_USERNAME,
+  WP_PASSWORD,
+  jestConfig,
+  Page
+}

@@ -5,15 +5,17 @@ Utilities and configuration for running puppeteer against WordPress.
 ## How to use
 This package has several utilities and configurations that can be used in your package.
 
+
 ### Configurations
+
 #### Jest Config
-This configuration pulls in several setup scripts as well as enabling screenshots and slack reporting.
+This configuration pulls in several setup scripts as well as enabling screenshots and slack reporting. The easiest way is to create a `jest.config.js` file in the root of your project or putting it somewhere else and using the Jest param `--config path\to\config\file`. To pull in the Jest config from this package, put the code below in `jest.config.js`.
 ```javascript
 const { jestConfig } = require( 'puppeteer-utils' );
 
 module.exports = jestConfig;
-
 ```
+
 
 #### Jest Puppeteer Config
 This config is set by using an environment variable pointing to the config file that is used by the Jest Puppeteer package.
@@ -21,8 +23,9 @@ This config is set by using an environment variable pointing to the config file 
 const { jestPuppeteerConfig } = require( 'puppeteer-utils' );
 
 jestPuppeteerConfig.useJestPuppeteerConfig();
-
 ```
+
+
 #### Overwriting or extending Jest Config
 If you need to add config values, scripts or overwrite values, you can do so. Here is an example of adding a new setup script.
 ```javascript
@@ -42,6 +45,8 @@ jestConfigMod.setupFiles = setupFiles;
 
 module.exports = jestConfigMod;
 ```
+
+
 #### Page Utilities
 The Page object offers several functions that extend existing puppeteer functionality. 
 ```javascript
@@ -56,7 +61,10 @@ await waitAndType( this.page, titleSelector, title );
 
 
 ## Node Config and Environment variables
+
 #### Node Config
+Create a Node [config file](https://www.npmjs.com/package/config) in your project and include these values. You may need to use the `NODE_CONFIG_DIR` to point to the directory of the config file.
+
 | Value | Description |
 | ------------- | ------------- |
 | ccUsers | Users to CC in Slack. Use format `<MYID>` where MYID is the string of numbers and letters of Slack Member ID |
