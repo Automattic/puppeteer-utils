@@ -76,7 +76,7 @@ Create a Node [config file](https://www.npmjs.com/package/config) in your projec
 
 | Value | Description |
 | ------------- | ------------- |
-| ccUsers | Users to CC in Slack. Use format `<MYID>` where MYID is the string of numbers and letters of Slack Member ID |
+| ccUsers | Users to CC in Slack. Use format `<@MYID>` where MYID is the string of numbers and letters of Slack Member ID |
 | slackBotEmoji | Emoji to use for Slack bot messages ie. `:smile:`. See also E2E_SLACKBOT_EMOJI environment variable|
 | slackBotUsername | Display name for Slack bot. See also E2E_SLACKBOT_USER environment variable|
 | slackChannel | Channel for Slack reporting. See also E2E_CHANNEL_NAME environment variable |
