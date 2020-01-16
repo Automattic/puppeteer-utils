@@ -9,7 +9,7 @@ This package has several utilities and configurations that can be used in your p
 ### Configurations
 
 #### Jest Config
-This configuration pulls in several setup scripts as well as enabling screenshots and slack reporting. The easiest way is to create a `jest.config.js` file in the root of your project or putting it somewhere else and using the Jest param `--config path\to\config\file`. To pull in the Jest config from this package, put the code below in `jest.config.js`.
+[This configuration](./src/jestConfig.js) pulls in several setup scripts as well as enabling screenshots and slack reporting. The easiest way is to create a `jest.config.js` file in the root of your project or putting it somewhere else and using the Jest param `--config path\to\config\file`. To pull in the Jest config from this package, put the code below in `jest.config.js`.
 ```javascript
 const { jestConfig } = require( 'puppeteer-utils' );
 
@@ -77,16 +77,18 @@ Create a Node [config file](https://www.npmjs.com/package/config) in your projec
 | Value | Description |
 | ------------- | ------------- |
 | ccUsers | Users to CC in Slack. Use format `<MYID>` where MYID is the string of numbers and letters of Slack Member ID |
-| slackBotEmoji | Emoji to use for Slack bot messages. `:smile:` |
-| slackBotUsername | Display name for Slack bot. |
+| slackBotEmoji | Emoji to use for Slack bot messages ie. `:smile:`. See also E2E_SLACKBOT_EMOJI environment variable|
+| slackBotUsername | Display name for Slack bot. See also E2E_SLACKBOT_USER environment variable|
 | slackChannel | Channel for Slack reporting. See also E2E_CHANNEL_NAME environment variable |
 | slackToken | Token for Slack reporting. See also E2E_SLACK_TOKEN environment variable |
-| WP_ADMIN_USER | JSON Object of WordPress Admin User `WP_ADMIN_USER: { username: 'wordpress', password: 'wordpress', }` |
-| WP_BASE_URL | Base url of WordPress Instance ie. 'http://localhost' |
+
 
 #### Environment Variables
 | Value | Description |
 | ------------- | ------------- |
 | E2E_SLACK_TOKEN | Slack token for reporting |
 | E2E_CHANNEL_NAME | Channel name for slack reporting |
+| E2E_SLACKBOT_USER | Emoji to use for Slack bot messages. `:smile:` |
+| E2E_SLACKBOT_EMOJI | Display name for Slack bot. |
 | E2E_DEBUG | Show debug logging for e2e tests. Default: false |
+| E2E_EXE_PATH | Path to executable to run for tests. Use this to run tests in Chrome instead of Chromium |

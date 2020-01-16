@@ -3,24 +3,35 @@
  * https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
  */
 
-const { CI, E2E_DEBUG, PUPPETEER_HEADLESS, PUPPETEER_SLOWMO } = process.env;
+const { CI, E2E_DEBUG, PUPPETEER_HEADLESS, PUPPETEER_SLOWMO, E2E_EXE_PATH } = process.env;
 let executablePath = '';
 let dumpio = false;
-if ( ! CI ) {
-    executablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+
+if ( ! CI && E2E_EXE_PATH !== '' ) {
+    executablePath = E2E_EXE_PATH;
 }
 
 if ( E2E_DEBUG ) {
     dumpio = true;
 }
-
 module.exports = {
     launch: {
-        headless: PUPPETEER_HEADLESS !== 'false',
-        devtools: PUPPETEER_HEADLESS === 'false',
+        headless: PUPPETEER_HEADLESS == 'false' ? false : true,
+        devtools: PUPPETEER_HEADLESS == 'false' ? true : false,
         slowMo: parseInt( PUPPETEER_SLOWMO, 10 ) || 0,
         executablePath,
         dumpio,
+        ignoreHTTPSErrors: true,
+        args: [
+            '--window-size=1920,1080',
+            '--user-agent=puppeteer-debug',
+        ],
+        defaultViewport: {
+            width: 1280,
+            height: 800,
+        },
+        // Required for the logged out and logged in tests so they don't share app state/token.
+        browserContext: 'incognito',
     },
     /**
      * Switched to false to make tests work with WP.com due to Chromium error:

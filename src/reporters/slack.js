@@ -13,20 +13,25 @@ const {
     E2E_SLACK_TOKEN,
     E2E_CHANNEL_NAME,
     TRAVIS_PULL_REQUEST,
+    E2E_CC_USERS,
+    E2E_SLACKBOT_USER,
+    E2E_SLACKBOT_EMOJI
 } = process.env;
-const token = E2E_SLACK_TOKEN || config.get( 'slackToken' );
-const conversationId = E2E_CHANNEL_NAME || config.get( 'slackChannel' );
-const ccUserList = config.get( 'ccUsers' );
-const slackBotUsername = config.get( 'slackBotUsername' );
-const slackBotEmoji = config.get( 'slackBotEmoji' );
-const webCli = new WebClient( token );
+
+
+const token = E2E_SLACK_TOKEN || config.has( 'slackToken') ? config.get( 'slackToken' ) : '';
+const conversationId = E2E_CHANNEL_NAME || config.has( 'slackChannel') ? config.get( 'slackChannel' ) : '';
+const ccUserList = E2E_CC_USERS || config.has( 'ccUsers') ? config.get( 'ccUsers' ) : '';
+const slackBotUsername = E2E_SLACKBOT_USER || config.has( 'slackBotUsername') ? config.get( 'slackBotUsername' ) : '';
+const slackBotEmoji = E2E_SLACKBOT_EMOJI || config.has( 'slackBotEmoji') ? config.get( 'slackBotEmoji' ) : '';
+const webCli = new WebClient(token);
 
 const repoURL = `https://github.com/${ TRAVIS_REPO_SLUG }`;
 const branchName = TRAVIS_PULL_REQUEST_BRANCH !== '' ? TRAVIS_PULL_REQUEST_BRANCH : TRAVIS_BRANCH;
 let ccUsers;
 
-if ( ccUserList != '' ) {
-  ccUsers = 'cc ' + ccUserList;
+if ( ccUserList ) {
+    ccUsers = 'cc ' + ccUserList;
 }
 
 async function sendRequestToSlack( fn ) {
