@@ -1,5 +1,5 @@
 {
-  "name": "automattic/puppeteer-utils",
+  "name": "@automattic/puppeteer-utils",
   "version": "0.0.1",
   "description": "Puppeteer utils and config for WP",
   "repository": {
