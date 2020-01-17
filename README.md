@@ -1,4 +1,4 @@
-# Puppeteer Utilities for WordPress (puppeteer-utils)
+# Puppeteer Utilities for WordPress (automattic/puppeteer-utils)
 Utilities and configuration for running puppeteer against WordPress.
 
 
