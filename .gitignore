@@ -1,0 +1,5 @@
+reports/
+logs/
+/node_modules
+.idea/
+lib/
