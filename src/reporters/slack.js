@@ -10,7 +10,7 @@ const {
     TRAVIS_REPO_SLUG,
     TRAVIS_PULL_REQUEST_BRANCH,
     TRAVIS_BUILD_WEB_URL,
-    TRAVIS_JOB_ID,
+    TRAVIS_JOB_NUMBER,
     E2E_SLACK_TOKEN,
     E2E_CHANNEL_NAME,
     TRAVIS_PULL_REQUEST,
@@ -73,7 +73,7 @@ const createSection = ( text, type = 'mrkdwn' ) => {
 const getThreadMessage = () => {
     const message = [];
 
-    let sectionMessage = `*Travis build:* [${ TRAVIS_JOB_ID }](${ TRAVIS_BUILD_WEB_URL })
+    let sectionMessage = `*Travis build:* [${ TRAVIS_JOB_NUMBER }](${ TRAVIS_BUILD_WEB_URL })
 *Github branch:* ${ branchName }`;
 
    if ( TRAVIS_PULL_REQUEST ) {
@@ -82,7 +82,7 @@ const getThreadMessage = () => {
    }
 
     message.push(
-        createSection( sectionMessage )
+        createSection( sectionMessage, 'mrkdwn' )
     );
     if ( ccUsers ) {
         message.push( createSection( ccUsers ) );
