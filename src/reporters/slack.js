@@ -157,7 +157,7 @@ export async function sendMessageToSlack( message ) {
         payload.blocks = message;
     }
 
-    await sendMessageInThread( payload );
+    return await sendMessageInThread( payload );
 }
 
 export async function sendSnippetToSlack( message ) {
@@ -168,7 +168,7 @@ export async function sendSnippetToSlack( message ) {
         content: message,
     };
 
-    await sendMessageInThread( payload );
+    return await sendMessageInThread( payload );
 }
 
 export async function sendFailedTestScreenshotToSlack( screenshotOfFailedTest ) {
@@ -178,5 +178,5 @@ export async function sendFailedTestScreenshotToSlack( screenshotOfFailedTest ) 
         channels: conversationId,
     };
 
-    await sendMessageInThread( payload );
+    return await sendMessageInThread( payload );
 }
