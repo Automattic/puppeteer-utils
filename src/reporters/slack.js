@@ -107,16 +107,24 @@ const getLogMessage = ( { name, block, error } ) => {
 
 const sendMessageInThread = async ( payload ) => {
     const sendMessage = async () => {
-        payload.thread_ts = threadId;
+        if ( threadId ) {
+            payload.thread_ts = threadId;
+        }
 
-        // For details, see: https://api.slack.com/methods/chat.postMessage
-        await sendRequestToSlack( async () => await webCli.chat.postMessage( payload ) );
+        if ( payload.file || payload.content ) {
+            // For details, see: https://api.slack.com/methods/files.upload
+            await sendRequestToSlack( async () => await webCli.files.upload( payload ) );
+        } else {
+            // For details, see: https://api.slack.com/methods/chat.postMessage
+            await sendRequestToSlack( async () => await webCli.chat.postMessage( payload ) );
+        }
     }
 
     if ( threadId ) {
         return await sendMessage();
     }
 
+    // Start thread on first message.
     let threadPayload = {
         channel: conversationId,
         username: slackBotUsername,
