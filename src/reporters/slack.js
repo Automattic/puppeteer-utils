@@ -72,12 +72,12 @@ const createSection = ( text, type = 'mrkdwn' ) => {
 const getThreadMessage = () => {
     const message = [];
 
-    let sectionMessage = `*Travis build:* ${ TRAVIS_BUILD_WEB_URL }
+    let sectionMessage = `*Travis build:* [${ TRAVIS_JOB_ID }](${ TRAVIS_BUILD_WEB_URL })
 *Github branch:* ${ branchName }`;
 
    if ( TRAVIS_PULL_REQUEST ) {
        sectionMessage += `
-*Github PR URL:* ${ repoURL }/pull/${ TRAVIS_PULL_REQUEST }`
+*Github PR:* [#${ TRAVIS_PULL_REQUEST }](${ repoURL }/pull/${ TRAVIS_PULL_REQUEST })`
    }
 
     message.push(
