@@ -37,7 +37,7 @@ if ( ccUserList != '' ) {
 
 async function sendRequestToSlack( fn ) {
     try {
-        await fn();
+        return await fn();
     } catch ( error ) {
         // Check the code property and log the response
         if (
@@ -55,6 +55,8 @@ async function sendRequestToSlack( fn ) {
             console.log( error );
         }
     }
+
+    return false;
 }
 
 const createSection = ( text, type = 'mrkdwn' ) => {
