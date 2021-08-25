@@ -14,15 +14,15 @@
     "test": "./run.sh ${TESTARGS:-$npm_package_defaultTestArgs}"
   },
   "dependencies": {
-    "@babel/cli": "^7.8.3",
-    "@babel/core": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
-    "@slack/web-api": "^5.6.0",
-    "@wordpress/e2e-test-utils": "^3.0.0",
-    "config": "^3.2.4",
+    "@babel/cli": "7.13.16",
+    "@babel/core": "7.14.0",
+    "@babel/preset-env": "7.14.1",
+    "@slack/web-api": "^6.1.0",
+    "@wordpress/e2e-test-utils": "^4.16.1",
+    "config": "3.3.3",
     "eslint": "6.7.2",
-    "jest": "^24.9.0",
-    "prettier": "npm:wp-prettier@1.19.1",
-    "puppeteer": "^2.0.0"
+    "jest": "27.0.6",
+    "prettier": "npm:wp-prettier@2.2.1-beta-1",
+    "puppeteer": "9.0.0"
   }
 }
