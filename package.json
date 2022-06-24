@@ -24,5 +24,8 @@
     "jest": "^24.9.0",
     "prettier": "npm:wp-prettier@1.19.1",
     "puppeteer": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/helper-compilation-targets": "^7.18.2"
   }
 }
