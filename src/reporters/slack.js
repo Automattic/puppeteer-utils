@@ -10,6 +10,7 @@ const {
     TRAVIS_REPO_SLUG,
     TRAVIS_PULL_REQUEST_BRANCH,
     TRAVIS_BUILD_WEB_URL,
+    TRAVIS_JOB_NUMBER,
     E2E_SLACK_TOKEN,
     E2E_CHANNEL_NAME,
     TRAVIS_PULL_REQUEST,
@@ -29,6 +30,7 @@ const webCli = new WebClient(token);
 const repoURL = `https://github.com/${ TRAVIS_REPO_SLUG }`;
 const branchName = TRAVIS_PULL_REQUEST_BRANCH !== '' ? TRAVIS_PULL_REQUEST_BRANCH : TRAVIS_BRANCH;
 let ccUsers;
+let threadId;
 
 if ( ccUserList != '' ) {
     ccUsers = 'cc ' + ccUserList;
@@ -36,7 +38,7 @@ if ( ccUserList != '' ) {
 
 async function sendRequestToSlack( fn ) {
     try {
-        await fn();
+        return await fn();
     } catch ( error ) {
         // Check the code property and log the response
         if (
@@ -54,6 +56,8 @@ async function sendRequestToSlack( fn ) {
             console.log( error );
         }
     }
+
+    return false;
 }
 
 const createSection = ( text, type = 'mrkdwn' ) => {
@@ -66,7 +70,28 @@ const createSection = ( text, type = 'mrkdwn' ) => {
     };
 };
 
-const getMessage = ( { name, block, error } ) => {
+const getThreadMessage = () => {
+    const message = [];
+
+    let sectionMessage = `*Travis build:* <${ TRAVIS_BUILD_WEB_URL }|#${ TRAVIS_JOB_NUMBER }>
+*Github branch:* ${ branchName }`;
+
+   if ( TRAVIS_PULL_REQUEST ) {
+       sectionMessage += `
+*Github PR:* <${ repoURL }/pull/${ TRAVIS_PULL_REQUEST }|#${ TRAVIS_PULL_REQUEST }>`
+   }
+
+    message.push(
+        createSection( sectionMessage, 'mrkdwn' )
+    );
+    if ( ccUsers ) {
+        message.push( createSection( ccUsers ) );
+    }
+
+    return message;
+};
+
+const getLogMessage = ( { name, block, error } ) => {
     let testFailure = '';
     if ( error.name || error.message ) {
         testFailure = error.name + ': ' + error.message;
@@ -75,19 +100,49 @@ const getMessage = ( { name, block, error } ) => {
     const message = [];
     message.push(
         createSection( `*TEST FAILED:* ${ testFullName }
-*Failure reason:* ${ testFailure }
-*Travis build:* ${ TRAVIS_BUILD_WEB_URL }
-*Github branch:* ${ branchName }
-*Github PR URL:* ${ repoURL }/pull/${ TRAVIS_PULL_REQUEST }` )
+*Failure reason:* ${ testFailure }` )
     );
-    if ( ccUsers ) {
-        message.push( createSection( ccUsers ) );
-    }
+
     return message;
 };
 
+const sendMessageInThread = async ( payload ) => {
+    const sendMessage = async () => {
+        if ( threadId ) {
+            payload.thread_ts = threadId;
+        }
+
+        if ( payload.file || payload.content ) {
+            // For details, see: https://api.slack.com/methods/files.upload
+            await sendRequestToSlack( async () => await webCli.files.upload( payload ) );
+        } else {
+            // For details, see: https://api.slack.com/methods/chat.postMessage
+            await sendRequestToSlack( async () => await webCli.chat.postMessage( payload ) );
+        }
+    }
+
+    if ( threadId ) {
+        return await sendMessage();
+    }
+
+    // Start thread on first message.
+    let threadPayload = {
+        channel: conversationId,
+        username: slackBotUsername,
+        icon_emoji: slackBotEmoji,
+        blocks: getThreadMessage(),
+    };
+
+    const threadResponse = await sendRequestToSlack( async () => await webCli.chat.postMessage( threadPayload ) );
+    if ( threadResponse && threadResponse.ok ) {
+        threadId = threadResponse.ts;
+    }
+
+    return await sendMessage();
+};
+
 export async function sendFailedTestMessageToSlack( testResult ) {
-    await sendMessageToSlack( getMessage( testResult ) );
+    await sendMessageToSlack( getLogMessage( testResult ) );
 }
 
 export async function sendMessageToSlack( message ) {
@@ -103,8 +158,7 @@ export async function sendMessageToSlack( message ) {
         payload.blocks = message;
     }
 
-    // For details, see: https://api.slack.com/methods/chat.postMessage
-    await sendRequestToSlack( async () => await webCli.chat.postMessage( payload ) );
+    return await sendMessageInThread( payload );
 }
 
 export async function sendSnippetToSlack( message ) {
@@ -115,7 +169,7 @@ export async function sendSnippetToSlack( message ) {
         content: message,
     };
 
-    return await sendRequestToSlack( async () => await webCli.files.upload( payload ) );
+    return await sendMessageInThread( payload );
 }
 
 export async function sendFailedTestScreenshotToSlack( screenshotOfFailedTest ) {
@@ -125,6 +179,5 @@ export async function sendFailedTestScreenshotToSlack( screenshotOfFailedTest ) 
         channels: conversationId,
     };
 
-    // For details, see: https://api.slack.com/methods/files.upload
-    return await sendRequestToSlack( async () => await webCli.files.upload( payload ) );
+    return await sendMessageInThread( payload );
 }
